@@ -1,4 +1,4 @@
 cargo:rerun-if-changed=permissions
-cargo:PERMISSION_FILES_PATH=/Users/user/Avail/plugins/stronghold/target/debug/build/tauri-plugin-stronghold-9f30142a6ea00dfd/out/tauri-plugin-stronghold-permission-files
-cargo:GLOBAL_API_SCRIPT_PATH=/Users/user/Avail/plugins/stronghold/api-iife.js
+cargo:PERMISSION_FILES_PATH=/Users/user/Avail/plugins/aleo_stronghold/target/debug/build/tauri-plugin-stronghold-9f30142a6ea00dfd/out/tauri-plugin-stronghold-permission-files
+cargo:GLOBAL_API_SCRIPT_PATH=/Users/user/Avail/plugins/aleo_stronghold/api-iife.js
 cargo:rustc-cfg=desktop

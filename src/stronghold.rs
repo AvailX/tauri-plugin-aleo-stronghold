@@ -40,7 +40,7 @@ impl Stronghold {
     pub fn new<P: AsRef<Path>>(path: P, password: Vec<u8>) -> Result<Self> {
         let path = SnapshotPath::from_path(path);
         let stronghold = iota_stronghold::Stronghold::default();
-        let keyprovider = KeyProvider::try_from(password)?;
+        let keyprovider = KeyProvider::try_from(zeroize::Zeroizing::new(password))?;
         if path.exists() {
             stronghold.load_snapshot(&keyprovider, &path)?;
         }

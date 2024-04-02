@@ -1,0 +1,15 @@
+/Users/user/Avail/plugins/aleo_stronghold/target/debug/deps/libmarkup5ever-4abb8f9709a8291c.rmeta: /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/lib.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/data/mod.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/interface/mod.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/interface/tree_builder.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/serialize.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/util/buffer_queue.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/util/smallcharset.rs /Users/user/Avail/plugins/aleo_stronghold/target/debug/build/markup5ever-c445a8cc3a709da5/out/generated.rs /Users/user/Avail/plugins/aleo_stronghold/target/debug/build/markup5ever-c445a8cc3a709da5/out/named_entities.rs
+
+/Users/user/Avail/plugins/aleo_stronghold/target/debug/deps/markup5ever-4abb8f9709a8291c.d: /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/lib.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/data/mod.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/interface/mod.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/interface/tree_builder.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/serialize.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/util/buffer_queue.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/util/smallcharset.rs /Users/user/Avail/plugins/aleo_stronghold/target/debug/build/markup5ever-c445a8cc3a709da5/out/generated.rs /Users/user/Avail/plugins/aleo_stronghold/target/debug/build/markup5ever-c445a8cc3a709da5/out/named_entities.rs
+
+/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/lib.rs:
+/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/data/mod.rs:
+/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/interface/mod.rs:
+/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/interface/tree_builder.rs:
+/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/serialize.rs:
+/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/util/buffer_queue.rs:
+/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.11.0/util/smallcharset.rs:
+/Users/user/Avail/plugins/aleo_stronghold/target/debug/build/markup5ever-c445a8cc3a709da5/out/generated.rs:
+/Users/user/Avail/plugins/aleo_stronghold/target/debug/build/markup5ever-c445a8cc3a709da5/out/named_entities.rs:
+
+# env-dep:OUT_DIR=/Users/user/Avail/plugins/aleo_stronghold/target/debug/build/markup5ever-c445a8cc3a709da5/out

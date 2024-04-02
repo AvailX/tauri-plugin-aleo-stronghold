@@ -21,12 +21,14 @@ use std::{
 
 use iota_stronghold::{
     procedures::{
-        BIP39Generate, BIP39Recover, Chain, Ed25519Sign, KeyType as StrongholdKeyType,
+        BIP39Generate, BIP39Recover, Ed25519Sign, KeyType as StrongholdKeyType,
         MnemonicLanguage, PublicKey, Slip10Derive, Slip10DeriveInput, Slip10Generate,
-        StrongholdProcedure,
+        StrongholdProcedure,Slip10Chain, Curve, AleoSign,GetAleoAddress
     },
-    Client, Location,
+    Client, Location, 
 };
+use crypto::keys::bip39::{Mnemonic,Passphrase};
+
 use serde::{de::Visitor, Deserialize, Deserializer};
 use stronghold::{Error, Result, Stronghold};
 use tauri::{
@@ -183,7 +185,7 @@ enum ProcedureDto {
         private_key: LocationDto,
         msg: String,
     },
-    BLS377Sign {
+    AleoSign {
         #[serde(rename = "privateKey")]
         private_key: LocationDto,
         msg: String,
@@ -204,7 +206,8 @@ impl From<ProcedureDto> for StrongholdProcedure {
                 input,
                 output,
             } => StrongholdProcedure::Slip10Derive(Slip10Derive {
-                chain: Chain::from_u32_hardened(chain),
+                curve: Curve::Ed25519,
+                chain,
                 input: input.into(),
                 output: output.into(),
             }),
@@ -213,13 +216,13 @@ impl From<ProcedureDto> for StrongholdProcedure {
                 passphrase,
                 output,
             } => StrongholdProcedure::BIP39Recover(BIP39Recover {
-                mnemonic,
-                passphrase,
+                mnemonic: Mnemonic::from(mnemonic),
+                passphrase: Passphrase::from(passphrase.unwrap_or("".to_string())),
                 output: output.into(),
             }),
             ProcedureDto::BIP39Generate { passphrase, output } => {
                 StrongholdProcedure::BIP39Generate(BIP39Generate {
-                    passphrase,
+                    passphrase: Passphrase::from(passphrase.unwrap_or("".to_string())),
                     output: output.into(),
                     language: MnemonicLanguage::English,
                 })
@@ -236,8 +239,8 @@ impl From<ProcedureDto> for StrongholdProcedure {
                     msg: msg.as_bytes().to_vec(),
                 })
             }
-            ProcedureDto::BLS377Sign { private_key, msg } => {
-                StrongholdProcedure::BLS377Sign(Ed25519Sign {
+            ProcedureDto::AleoSign { private_key, msg } => {
+                StrongholdProcedure::AleoSign(AleoSign {
                     private_key: private_key.into(),
                     msg: msg.as_bytes().to_vec(),
                 })
@@ -362,7 +365,7 @@ async fn save_secret(
     let client = get_client(collection, snapshot_path, client)?;
     client
         .vault(&vault)
-        .write_secret(Location::generic(vault, record_path), secret)
+        .write_secret(Location::generic(vault, record_path), zeroize::Zeroizing::new(secret))
         .map_err(Into::into)
 }
 
