@@ -23,7 +23,7 @@ use iota_stronghold::{
     procedures::{
         BIP39Generate, BIP39Recover, Ed25519Sign, KeyType as StrongholdKeyType,
         MnemonicLanguage, PublicKey, Slip10Derive, Slip10DeriveInput, Slip10Generate,
-        StrongholdProcedure,Slip10Chain, Curve, AleoSign,GetAleoAddress
+        StrongholdProcedure, Curve, AleoSign,GetAleoAddress
     },
     Client, Location, 
 };
@@ -45,13 +45,13 @@ pub mod stronghold;
 type PasswordHashFn = dyn Fn(&str) -> Vec<u8> + Send + Sync;
 
 #[derive(Default)]
-struct StrongholdCollection(Arc<Mutex<HashMap<PathBuf, Stronghold>>>);
+pub struct StrongholdCollection(Arc<Mutex<HashMap<PathBuf, Stronghold>>>);
 
-struct PasswordHashFunction(Box<PasswordHashFn>);
+pub struct PasswordHashFunction(Box<PasswordHashFn>);
 
 #[derive(Deserialize, Hash, Eq, PartialEq, Ord, PartialOrd)]
 #[serde(untagged)]
-enum BytesDto {
+pub enum BytesDto {
     Text(String),
     Raw(Vec<u8>),
 }
@@ -76,7 +76,7 @@ impl From<BytesDto> for Vec<u8> {
 
 #[derive(Deserialize)]
 #[serde(tag = "type", content = "payload")]
-enum LocationDto {
+pub enum LocationDto {
     Generic { vault: BytesDto, record: BytesDto },
     Counter { vault: BytesDto, counter: usize },
 }
@@ -93,7 +93,7 @@ impl From<LocationDto> for Location {
 #[derive(Deserialize)]
 #[serde(tag = "type", content = "payload")]
 #[allow(clippy::upper_case_acronyms)]
-enum Slip10DeriveInputDto {
+pub enum Slip10DeriveInputDto {
     Seed(LocationDto),
     Key(LocationDto),
 }
@@ -154,7 +154,7 @@ impl<'de> Deserialize<'de> for KeyType {
 #[derive(Deserialize)]
 #[serde(tag = "type", content = "payload")]
 #[allow(clippy::upper_case_acronyms)]
-enum ProcedureDto {
+pub enum ProcedureDto {
     SLIP10Generate {
         output: LocationDto,
         #[serde(rename = "sizeBytes")]
@@ -189,6 +189,10 @@ enum ProcedureDto {
         #[serde(rename = "privateKey")]
         private_key: LocationDto,
         msg: String,
+    },
+    GetAleoAddress {
+        #[serde(rename = "privateKey")]
+        private_key: LocationDto,
     },
 }
 
@@ -244,13 +248,19 @@ impl From<ProcedureDto> for StrongholdProcedure {
                     private_key: private_key.into(),
                     msg: msg.as_bytes().to_vec(),
                 })
+            },
+            ProcedureDto::GetAleoAddress { private_key } => {
+                StrongholdProcedure::GetAleoAddress(GetAleoAddress {
+                    private_key: private_key.into(),
+                })
             }
+            
         }
     }
 }
 
-#[tauri::command]
-async fn initialize(
+
+pub async fn initialize(
     collection: State<'_, StrongholdCollection>,
     hash_function: State<'_, PasswordHashFunction>,
     snapshot_path: PathBuf,
@@ -269,8 +279,8 @@ async fn initialize(
     Ok(())
 }
 
-#[tauri::command]
-async fn destroy(
+
+pub async fn destroy(
     collection: State<'_, StrongholdCollection>,
     snapshot_path: PathBuf,
 ) -> Result<()> {
@@ -284,8 +294,8 @@ async fn destroy(
     Ok(())
 }
 
-#[tauri::command]
-async fn save(collection: State<'_, StrongholdCollection>, snapshot_path: PathBuf) -> Result<()> {
+
+pub async fn save(collection: State<'_, StrongholdCollection>, snapshot_path: PathBuf) -> Result<()> {
     let collection = collection.0.lock().unwrap();
     if let Some(stronghold) = collection.get(&snapshot_path) {
         stronghold.save()?;
@@ -293,8 +303,8 @@ async fn save(collection: State<'_, StrongholdCollection>, snapshot_path: PathBu
     Ok(())
 }
 
-#[tauri::command]
-async fn create_client(
+
+pub async fn create_client(
     collection: State<'_, StrongholdCollection>,
     snapshot_path: PathBuf,
     client: BytesDto,
@@ -304,8 +314,8 @@ async fn create_client(
     Ok(())
 }
 
-#[tauri::command]
-async fn load_client(
+
+pub async fn load_client(
     collection: State<'_, StrongholdCollection>,
     snapshot_path: PathBuf,
     client: BytesDto,
@@ -315,8 +325,8 @@ async fn load_client(
     Ok(())
 }
 
-#[tauri::command]
-async fn get_store_record(
+
+pub async fn get_store_record(
     collection: State<'_, StrongholdCollection>,
     snapshot_path: PathBuf,
     client: BytesDto,
@@ -326,8 +336,8 @@ async fn get_store_record(
     client.store().get(key.as_ref()).map_err(Into::into)
 }
 
-#[tauri::command]
-async fn save_store_record(
+
+pub async fn save_store_record(
     collection: State<'_, StrongholdCollection>,
     snapshot_path: PathBuf,
     client: BytesDto,
@@ -342,8 +352,8 @@ async fn save_store_record(
         .map_err(Into::into)
 }
 
-#[tauri::command]
-async fn remove_store_record(
+
+pub async fn remove_store_record(
     collection: State<'_, StrongholdCollection>,
     snapshot_path: PathBuf,
     client: BytesDto,
@@ -353,8 +363,8 @@ async fn remove_store_record(
     client.store().delete(key.as_ref()).map_err(Into::into)
 }
 
-#[tauri::command]
-async fn save_secret(
+
+pub async fn save_secret(
     collection: State<'_, StrongholdCollection>,
     snapshot_path: PathBuf,
     client: BytesDto,
@@ -369,8 +379,8 @@ async fn save_secret(
         .map_err(Into::into)
 }
 
-#[tauri::command]
-async fn remove_secret(
+
+pub async fn remove_secret(
     collection: State<'_, StrongholdCollection>,
     snapshot_path: PathBuf,
     client: BytesDto,
@@ -385,8 +395,8 @@ async fn remove_secret(
         .map_err(Into::into)
 }
 
-#[tauri::command]
-async fn execute_procedure(
+
+pub async fn execute_procedure(
     collection: State<'_, StrongholdCollection>,
     snapshot_path: PathBuf,
     client: BytesDto,
@@ -488,20 +498,6 @@ impl Builder {
     fn invoke_stronghold_handlers_and_build<R: Runtime>(
         builder: PluginBuilder<R>,
     ) -> TauriPlugin<R> {
-        builder
-            .invoke_handler(tauri::generate_handler![
-                initialize,
-                destroy,
-                save,
-                create_client,
-                load_client,
-                get_store_record,
-                save_store_record,
-                remove_store_record,
-                save_secret,
-                remove_secret,
-                execute_procedure,
-            ])
-            .build()
+        builder.build()
     }
 }

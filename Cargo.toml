@@ -21,7 +21,7 @@ serde_json = "1"
 tauri = "2.0.0-beta.12"
 log = "0.4"
 thiserror = "1"
-iota_stronghold = {git="https://github.com/AvailX/stronghold.rs", rev="961b472"}
+iota_stronghold = {git="https://github.com/AvailX/stronghold.rs", rev="fe6f7e6"}
 iota-crypto = "0.23"
 hex = "0.4"
 zeroize = { version = "1", features = [ "zeroize_derive" ] }
