@@ -436,7 +436,7 @@ fn get_client(
     }
 }
 
-enum PasswordHashFunctionKind {
+pub enum PasswordHashFunctionKind {
     #[cfg(feature = "kdf")]
     Argon2(PathBuf),
     Custom(Box<PasswordHashFn>),
