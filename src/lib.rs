@@ -25,7 +25,7 @@ use iota_stronghold::{
         MnemonicLanguage, PublicKey, Slip10Derive, Slip10DeriveInput, Slip10Generate,
         StrongholdProcedure, Curve, AleoSign,GetAleoAddress
     },
-    Client, Location, 
+    Client, Location,
 };
 use crypto::keys::bip39::{Mnemonic,Passphrase};
 
@@ -161,6 +161,7 @@ pub enum ProcedureDto {
         size_bytes: Option<usize>,
     },
     SLIP10Derive {
+        curve: Curve,
         chain: Vec<u32>,
         input: Slip10DeriveInputDto,
         output: LocationDto,
@@ -206,11 +207,12 @@ impl From<ProcedureDto> for StrongholdProcedure {
                 })
             }
             ProcedureDto::SLIP10Derive {
+                curve,
                 chain,
                 input,
                 output,
             } => StrongholdProcedure::Slip10Derive(Slip10Derive {
-                curve: Curve::Ed25519,
+                curve,
                 chain,
                 input: input.into(),
                 output: output.into(),
@@ -254,7 +256,7 @@ impl From<ProcedureDto> for StrongholdProcedure {
                     private_key: private_key.into(),
                 })
             }
-            
+
         }
     }
 }
