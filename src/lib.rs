@@ -29,7 +29,7 @@ use iota_stronghold::{
 };
 use crypto::keys::bip39::{Mnemonic,Passphrase};
 
-use serde::{de::Visitor, Deserialize, Deserializer};
+use serde::{de::Visitor, Deserialize, Deserializer, Serialize};
 use stronghold::{Error, Result, Stronghold};
 use tauri::{
     plugin::{Builder as PluginBuilder, TauriPlugin},
@@ -49,7 +49,7 @@ pub struct StrongholdCollection(Arc<Mutex<HashMap<PathBuf, Stronghold>>>);
 
 pub struct PasswordHashFunction(Box<PasswordHashFn>);
 
-#[derive(Deserialize, Hash, Eq, PartialEq, Ord, PartialOrd)]
+#[derive(Deserialize, Hash, Eq, PartialEq, Ord, PartialOrd,Serialize)]
 #[serde(untagged)]
 pub enum BytesDto {
     Text(String),
