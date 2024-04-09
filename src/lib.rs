@@ -47,7 +47,7 @@ type PasswordHashFn = dyn Fn(&str) -> Vec<u8> + Send + Sync;
 #[derive(Default)]
 pub struct StrongholdCollection(Arc<Mutex<HashMap<PathBuf, Stronghold>>>);
 
-pub struct PasswordHashFunction(Box<PasswordHashFn>);
+pub struct PasswordHashFunction(pub Box<PasswordHashFn>);
 
 #[derive(Deserialize, Hash, Eq, PartialEq, Ord, PartialOrd,Serialize)]
 #[serde(untagged)]
