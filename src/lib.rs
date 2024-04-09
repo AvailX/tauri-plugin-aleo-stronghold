@@ -33,7 +33,7 @@ use serde::{de::Visitor, Deserialize, Deserializer, Serialize};
 use stronghold::{Error, Result, Stronghold};
 use tauri::{
     plugin::{Builder as PluginBuilder, TauriPlugin},
-    Manager, Runtime, State,
+    Manager, Runtime,
 };
 use zeroize::Zeroize;
 
@@ -263,8 +263,8 @@ impl From<ProcedureDto> for StrongholdProcedure {
 
 
 pub async fn initialize(
-    collection: State<'_, StrongholdCollection>,
-    hash_function: State<'_, PasswordHashFunction>,
+    collection: StrongholdCollection,
+    hash_function: PasswordHashFunction,
     snapshot_path: PathBuf,
     mut password: String,
 ) -> Result<()> {
@@ -283,7 +283,7 @@ pub async fn initialize(
 
 
 pub async fn destroy(
-    collection: State<'_, StrongholdCollection>,
+    collection: StrongholdCollection,
     snapshot_path: PathBuf,
 ) -> Result<()> {
     let mut collection = collection.0.lock().unwrap();
@@ -297,7 +297,7 @@ pub async fn destroy(
 }
 
 
-pub async fn save(collection: State<'_, StrongholdCollection>, snapshot_path: PathBuf) -> Result<()> {
+pub async fn save(collection: StrongholdCollection, snapshot_path: PathBuf) -> Result<()> {
     let collection = collection.0.lock().unwrap();
     if let Some(stronghold) = collection.get(&snapshot_path) {
         stronghold.save()?;
@@ -307,7 +307,7 @@ pub async fn save(collection: State<'_, StrongholdCollection>, snapshot_path: Pa
 
 
 pub async fn create_client(
-    collection: State<'_, StrongholdCollection>,
+    collection: StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
 ) -> Result<()> {
@@ -318,7 +318,7 @@ pub async fn create_client(
 
 
 pub async fn load_client(
-    collection: State<'_, StrongholdCollection>,
+    collection:  StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
 ) -> Result<()> {
@@ -329,7 +329,7 @@ pub async fn load_client(
 
 
 pub async fn get_store_record(
-    collection: State<'_, StrongholdCollection>,
+    collection: StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     key: String,
@@ -340,7 +340,7 @@ pub async fn get_store_record(
 
 
 pub async fn save_store_record(
-    collection: State<'_, StrongholdCollection>,
+    collection: StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     key: String,
@@ -356,7 +356,7 @@ pub async fn save_store_record(
 
 
 pub async fn remove_store_record(
-    collection: State<'_, StrongholdCollection>,
+    collection: StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     key: String,
@@ -367,7 +367,7 @@ pub async fn remove_store_record(
 
 
 pub async fn save_secret(
-    collection: State<'_, StrongholdCollection>,
+    collection: StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     vault: BytesDto,
@@ -383,7 +383,7 @@ pub async fn save_secret(
 
 
 pub async fn remove_secret(
-    collection: State<'_, StrongholdCollection>,
+    collection: StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     vault: BytesDto,
@@ -399,7 +399,7 @@ pub async fn remove_secret(
 
 
 pub async fn execute_procedure(
-    collection: State<'_, StrongholdCollection>,
+    collection: StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     procedure: ProcedureDto,
@@ -412,7 +412,7 @@ pub async fn execute_procedure(
 }
 
 fn get_stronghold(
-    collection: State<'_, StrongholdCollection>,
+    collection: StrongholdCollection,
     snapshot_path: PathBuf,
 ) -> Result<iota_stronghold::Stronghold> {
     let collection = collection.0.lock().unwrap();
@@ -424,7 +424,7 @@ fn get_stronghold(
 }
 
 fn get_client(
-    collection: State<'_, StrongholdCollection>,
+    collection: StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
 ) -> Result<Client> {
