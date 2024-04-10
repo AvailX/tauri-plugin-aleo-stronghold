@@ -329,7 +329,7 @@ pub async fn load_client(
 
 
 pub async fn get_store_record(
-    collection: StrongholdCollection,
+    collection: &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     key: String,
@@ -340,7 +340,7 @@ pub async fn get_store_record(
 
 
 pub async fn save_store_record(
-    collection: StrongholdCollection,
+    collection: &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     key: String,
@@ -356,7 +356,7 @@ pub async fn save_store_record(
 
 
 pub async fn remove_store_record(
-    collection: StrongholdCollection,
+    collection: &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     key: String,
@@ -367,7 +367,7 @@ pub async fn remove_store_record(
 
 
 pub async fn save_secret(
-    collection: StrongholdCollection,
+    collection: &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     vault: BytesDto,
@@ -383,7 +383,7 @@ pub async fn save_secret(
 
 
 pub async fn remove_secret(
-    collection: StrongholdCollection,
+    collection: &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     vault: BytesDto,
@@ -399,7 +399,7 @@ pub async fn remove_secret(
 
 
 pub async fn execute_procedure(
-    collection: StrongholdCollection,
+    collection: &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
     procedure: ProcedureDto,
@@ -424,7 +424,7 @@ fn get_stronghold(
 }
 
 fn get_client(
-    collection: StrongholdCollection,
+    collection: &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
 ) -> Result<Client> {
