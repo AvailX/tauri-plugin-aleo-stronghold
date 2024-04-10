@@ -2092,7 +2092,7 @@ dependencies = [
 [[package]]
 name = "iota_stronghold"
 version = "2.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=700b253#700b25325224b5ce862704a2b059318b33ec602f"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=11598b3#11598b3de85ceb3ad145b42e4c3307143299ef3a"
 dependencies = [
  "bincode",
  "hkdf",
@@ -4207,7 +4207,7 @@ dependencies = [
 [[package]]
 name = "stronghold-derive"
 version = "1.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=700b253#700b25325224b5ce862704a2b059318b33ec602f"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=11598b3#11598b3de85ceb3ad145b42e4c3307143299ef3a"
 dependencies = [
  "proc-macro2",
  "quote 1.0.35",
@@ -4217,7 +4217,7 @@ dependencies = [
 [[package]]
 name = "stronghold-runtime"
 version = "2.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=700b253#700b25325224b5ce862704a2b059318b33ec602f"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=11598b3#11598b3de85ceb3ad145b42e4c3307143299ef3a"
 dependencies = [
  "dirs",
  "iota-crypto 0.23.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -4235,7 +4235,7 @@ dependencies = [
 [[package]]
 name = "stronghold-utils"
 version = "1.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=700b253#700b25325224b5ce862704a2b059318b33ec602f"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=11598b3#11598b3de85ceb3ad145b42e4c3307143299ef3a"
 dependencies = [
  "rand 0.8.5",
  "stronghold-derive",
@@ -4244,7 +4244,7 @@ dependencies = [
 [[package]]
 name = "stronghold_engine"
 version = "2.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=700b253#700b25325224b5ce862704a2b059318b33ec602f"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=11598b3#11598b3de85ceb3ad145b42e4c3307143299ef3a"
 dependencies = [
  "anyhow",
  "dirs-next",
