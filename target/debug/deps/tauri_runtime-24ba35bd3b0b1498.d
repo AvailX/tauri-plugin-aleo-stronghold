@@ -1,9 +1,0 @@
-/Users/user/Avail/plugins/stronghold/target/debug/deps/libtauri_runtime-24ba35bd3b0b1498.rmeta: /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/lib.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/monitor.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/webview.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/window.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/window/dpi.rs
-
-/Users/user/Avail/plugins/stronghold/target/debug/deps/tauri_runtime-24ba35bd3b0b1498.d: /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/lib.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/monitor.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/webview.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/window.rs /Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/window/dpi.rs
-
-/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/lib.rs:
-/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/monitor.rs:
-/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/webview.rs:
-/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/window.rs:
-/Users/user/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tauri-runtime-2.0.0-beta.10/src/window/dpi.rs:
