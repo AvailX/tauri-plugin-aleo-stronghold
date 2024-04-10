@@ -307,7 +307,7 @@ pub async fn save(collection: StrongholdCollection, snapshot_path: PathBuf) -> R
 
 
 pub async fn create_client(
-    collection: StrongholdCollection,
+    collection: &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
 ) -> Result<()> {
@@ -318,7 +318,7 @@ pub async fn create_client(
 
 
 pub async fn load_client(
-    collection:  StrongholdCollection,
+    collection:  &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
 ) -> Result<()> {
@@ -412,7 +412,7 @@ pub async fn execute_procedure(
 }
 
 fn get_stronghold(
-    collection: StrongholdCollection,
+    collection: &StrongholdCollection,
     snapshot_path: PathBuf,
 ) -> Result<iota_stronghold::Stronghold> {
     let collection = collection.0.lock().unwrap();
