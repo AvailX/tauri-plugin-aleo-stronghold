@@ -263,7 +263,7 @@ impl From<ProcedureDto> for StrongholdProcedure {
 
 
 pub async fn initialize(
-    collection: StrongholdCollection,
+    collection: &StrongholdCollection,
     hash_function: PasswordHashFunction,
     snapshot_path: PathBuf,
     mut password: String,
