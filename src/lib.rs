@@ -283,7 +283,7 @@ pub async fn initialize(
 
 
 pub async fn destroy(
-    collection: StrongholdCollection,
+    collection: &StrongholdCollection,
     snapshot_path: PathBuf,
 ) -> Result<()> {
     let mut collection = collection.0.lock().unwrap();
@@ -297,7 +297,7 @@ pub async fn destroy(
 }
 
 
-pub async fn save(collection: StrongholdCollection, snapshot_path: PathBuf) -> Result<()> {
+pub async fn save(collection: &StrongholdCollection, snapshot_path: PathBuf) -> Result<()> {
     let collection = collection.0.lock().unwrap();
     if let Some(stronghold) = collection.get(&snapshot_path) {
         stronghold.save()?;
