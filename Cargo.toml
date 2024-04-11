@@ -21,8 +21,8 @@ serde_json = "1"
 tauri = "2.0.0-beta.12"
 log = "0.4"
 thiserror = "1"
-iota_stronghold = {git="https://github.com/AvailX/stronghold.rs", rev="3d51a25"}
-iota-crypto = {git="https://github.com/AvailX/crypto.rs", rev="d97705e", features=["bip39"]}
+iota_stronghold = {git="https://github.com/AvailX/stronghold.rs", rev="efaf753"}
+iota-crypto = {git="https://github.com/AvailX/crypto.rs", rev="2191a74", features=["bip39"]}
 hex = "0.4"
 zeroize = { version = "1", features = [ "zeroize_derive" ] }
 rust-argon2 = { version = "1", optional = true }
