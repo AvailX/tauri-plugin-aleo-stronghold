@@ -49,7 +49,7 @@ pub struct StrongholdCollection(Arc<Mutex<HashMap<PathBuf, Stronghold>>>);
 
 pub struct PasswordHashFunction(pub Box<PasswordHashFn>);
 
-#[derive(Deserialize, Hash, Eq, PartialEq, Ord, PartialOrd,Serialize)]
+#[derive(Deserialize, Hash, Eq, PartialEq, Ord, PartialOrd,Serialize, Clone)]
 #[serde(untagged)]
 pub enum BytesDto {
     Text(String),
