@@ -23,7 +23,7 @@ use iota_stronghold::{
     procedures::{
         BIP39Generate, BIP39Recover, Ed25519Sign, KeyType as StrongholdKeyType,
         MnemonicLanguage, PublicKey, Slip10Derive, Slip10DeriveInput, Slip10Generate,
-        StrongholdProcedure, Curve, AleoSign,GetAleoAddress
+        StrongholdProcedure, Curve, AleoSign,GetAleoAddress,AleoSignRequest
     },
     Client, Location,
 };
@@ -32,6 +32,7 @@ use crypto::keys::bip39::{Mnemonic,Passphrase};
 use serde::{de::Visitor, Deserialize, Deserializer, Serialize};
 use stronghold::{Error, Result, Stronghold};
 use zeroize::Zeroize;
+use snarkvm_console::{network::Network, program::{Identifier,ProgramID,Value, ValueType, Field}};
 
 #[cfg(feature = "kdf")]
 pub mod kdf;
@@ -148,9 +149,9 @@ impl<'de> Deserialize<'de> for KeyType {
 }
 
 #[derive(Deserialize)]
-#[serde(tag = "type", content = "payload")]
+#[serde(tag = "type", content = "payload", bound = "N: Network")]
 #[allow(clippy::upper_case_acronyms)]
-pub enum ProcedureDto {
+pub enum ProcedureDto<N:Network> {
     SLIP10Generate {
         output: LocationDto,
         #[serde(rename = "sizeBytes")]
@@ -161,6 +162,7 @@ pub enum ProcedureDto {
         chain: Vec<u32>,
         input: Slip10DeriveInputDto,
         output: LocationDto,
+        network: String
     },
     BIP39Recover {
         mnemonic: String,
@@ -186,15 +188,27 @@ pub enum ProcedureDto {
         #[serde(rename = "privateKey")]
         private_key: LocationDto,
         msg: String,
+        ext: Identifier<N>
     },
     GetAleoAddress {
         #[serde(rename = "privateKey")]
         private_key: LocationDto,
+        ext: Identifier<N>
     },
+    AleoSignRequest {
+        program_id: ProgramID<N>,
+        function_name: Identifier<N>,
+        inputs: Vec<Value<N>>,
+        input_types: Vec<ValueType<N>>,
+        root_tvk: Option<Field<N>>,
+        is_root: bool,
+        #[serde(rename = "privateKey")]
+        private_key: LocationDto,
+    }
 }
 
-impl From<ProcedureDto> for StrongholdProcedure {
-    fn from(dto: ProcedureDto) -> StrongholdProcedure {
+impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
+    fn from(dto: ProcedureDto<N>) -> StrongholdProcedure<N> {
         match dto {
             ProcedureDto::SLIP10Generate { output, size_bytes } => {
                 StrongholdProcedure::Slip10Generate(Slip10Generate {
@@ -207,11 +221,13 @@ impl From<ProcedureDto> for StrongholdProcedure {
                 chain,
                 input,
                 output,
+                network
             } => StrongholdProcedure::Slip10Derive(Slip10Derive {
                 curve,
                 chain,
                 input: input.into(),
                 output: output.into(),
+                network
             }),
             ProcedureDto::BIP39Recover {
                 mnemonic,
@@ -241,15 +257,28 @@ impl From<ProcedureDto> for StrongholdProcedure {
                     msg: msg.as_bytes().to_vec(),
                 })
             }
-            ProcedureDto::AleoSign { private_key, msg } => {
+            ProcedureDto::AleoSign { private_key, msg, ext } => {
                 StrongholdProcedure::AleoSign(AleoSign {
                     private_key: private_key.into(),
                     msg: msg.as_bytes().to_vec(),
+                    ext
                 })
             },
-            ProcedureDto::GetAleoAddress { private_key } => {
+            ProcedureDto::GetAleoAddress { private_key, ext } => {
                 StrongholdProcedure::GetAleoAddress(GetAleoAddress {
                     private_key: private_key.into(),
+                    ext
+                })
+            },
+            ProcedureDto::AleoSignRequest { program_id, function_name, inputs, input_types, root_tvk, is_root, private_key } => {
+                StrongholdProcedure::AleoSignRequest(AleoSignRequest {
+                    program_id,
+                    function_name,
+                    inputs,
+                    input_types,
+                    root_tvk,
+                    is_root,
+                    private_key: private_key.into()
                 })
             }
 
@@ -394,11 +423,11 @@ pub async fn remove_secret(
 }
 
 
-pub async fn execute_procedure(
+pub async fn execute_procedure<N:Network>(
     collection: &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
-    procedure: ProcedureDto,
+    procedure: ProcedureDto<N>,
 ) -> Result<Vec<u8>> {
     let client = get_client(collection, snapshot_path, client)?;
     client
