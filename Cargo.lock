@@ -820,7 +820,7 @@ dependencies = [
 [[package]]
 name = "iota-crypto"
 version = "0.23.1"
-source = "git+https://github.com/AvailX/crypto.rs?rev=729131d#729131de13c4115ea78f731e3f3ec2b5f03889a3"
+source = "git+https://github.com/AvailX/crypto.rs?rev=5b343da#5b343dab90e846fce39ad3dd5459d22e96a4edcd"
 dependencies = [
  "aead",
  "aes",
@@ -850,11 +850,11 @@ dependencies = [
 [[package]]
 name = "iota_stronghold"
 version = "2.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=414976c#414976c52e4b4db80aa235027286f6a11f09f6d9"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=4b79d7c#4b79d7c63ce8892c224e4ecd5cfa347fcb74a1a1"
 dependencies = [
  "bincode",
  "hkdf",
- "iota-crypto 0.23.1 (git+https://github.com/AvailX/crypto.rs?rev=729131d)",
+ "iota-crypto 0.23.1 (git+https://github.com/AvailX/crypto.rs?rev=5b343da)",
  "rand",
  "rust-argon2",
  "serde",
@@ -1503,7 +1503,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-algorithms"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "aleo-std",
  "anyhow",
@@ -1533,7 +1533,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "snarkvm-console-account",
  "snarkvm-console-algorithms",
@@ -1546,7 +1546,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-account"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "bs58",
  "snarkvm-console-network",
@@ -1557,7 +1557,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-algorithms"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "blake2s_simd",
  "smallvec",
@@ -1570,7 +1570,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-collections"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "aleo-std",
  "rayon",
@@ -1581,7 +1581,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-network"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "anyhow",
  "indexmap",
@@ -1604,7 +1604,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-network-environment"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "anyhow",
  "bech32",
@@ -1622,7 +1622,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-program"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "enum_index",
  "enum_index_derive",
@@ -1643,7 +1643,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-address",
@@ -1658,7 +1658,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-address"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1669,7 +1669,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-boolean"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "snarkvm-console-network-environment",
 ]
@@ -1677,7 +1677,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-field"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1687,7 +1687,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-group"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1698,7 +1698,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-integers"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1709,7 +1709,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-scalar"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1720,7 +1720,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-console-types-string"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "snarkvm-console-network-environment",
  "snarkvm-console-types-boolean",
@@ -1731,7 +1731,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-curves"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "rand",
  "rayon",
@@ -1745,7 +1745,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-fields"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "aleo-std",
  "anyhow",
@@ -1762,7 +1762,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-parameters"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "aleo-std",
  "anyhow",
@@ -1787,7 +1787,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-utilities"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "aleo-std",
  "anyhow",
@@ -1808,7 +1808,7 @@ dependencies = [
 [[package]]
 name = "snarkvm-utilities-derives"
 version = "0.16.19"
-source = "git+https://github.com/AvailX/snarkVM#d48f6fb7d7ca36d134407baebcc59952fe58c546"
+source = "git+https://github.com/AvailX/snarkVM/?branch=mainnet-staging-stronghold-exec#e26e8002375e4078eec4d5da7b113ff6ec88f088"
 dependencies = [
  "proc-macro2",
  "quote 1.0.35",
@@ -1838,7 +1838,7 @@ dependencies = [
 [[package]]
 name = "stronghold-derive"
 version = "1.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=414976c#414976c52e4b4db80aa235027286f6a11f09f6d9"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=4b79d7c#4b79d7c63ce8892c224e4ecd5cfa347fcb74a1a1"
 dependencies = [
  "proc-macro2",
  "quote 1.0.35",
@@ -1848,7 +1848,7 @@ dependencies = [
 [[package]]
 name = "stronghold-runtime"
 version = "2.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=414976c#414976c52e4b4db80aa235027286f6a11f09f6d9"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=4b79d7c#4b79d7c63ce8892c224e4ecd5cfa347fcb74a1a1"
 dependencies = [
  "dirs",
  "iota-crypto 0.23.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1866,7 +1866,7 @@ dependencies = [
 [[package]]
 name = "stronghold-utils"
 version = "1.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=414976c#414976c52e4b4db80aa235027286f6a11f09f6d9"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=4b79d7c#4b79d7c63ce8892c224e4ecd5cfa347fcb74a1a1"
 dependencies = [
  "rand",
  "stronghold-derive",
@@ -1875,7 +1875,7 @@ dependencies = [
 [[package]]
 name = "stronghold_engine"
 version = "2.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=414976c#414976c52e4b4db80aa235027286f6a11f09f6d9"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=4b79d7c#4b79d7c63ce8892c224e4ecd5cfa347fcb74a1a1"
 dependencies = [
  "anyhow",
  "dirs-next",
@@ -1942,7 +1942,7 @@ name = "tauri-plugin-aleo-stronghold"
 version = "2.0.0-beta.3"
 dependencies = [
  "hex",
- "iota-crypto 0.23.1 (git+https://github.com/AvailX/crypto.rs?rev=729131d)",
+ "iota-crypto 0.23.1 (git+https://github.com/AvailX/crypto.rs?rev=5b343da)",
  "iota_stronghold",
  "rand",
  "rand_chacha",
