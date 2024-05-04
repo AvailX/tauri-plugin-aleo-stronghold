@@ -15,8 +15,8 @@ rustdoc-args = [ "--cfg", "docsrs" ]
 serde = { version = "1", features = ["derive"]}
 serde_json = "1"
 thiserror = "1"
-iota_stronghold = {git="https://github.com/AvailX/stronghold.rs", rev="4b79d7c"}
-iota-crypto = {git="https://github.com/AvailX/crypto.rs", rev="5b343da", features=["bip39"]}
+iota_stronghold = {git="https://github.com/AvailX/stronghold.rs", rev="683c727"}
+iota-crypto = {git="https://github.com/AvailX/crypto.rs", rev="5e27780", features=["bip39"]}
 hex = "0.4"
 zeroize = { version = "1", features = [ "zeroize_derive" ] }
 rust-argon2 = { version = "1", optional = true }
