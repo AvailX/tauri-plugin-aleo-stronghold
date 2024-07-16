@@ -206,7 +206,7 @@ pub enum ProcedureDto<N:Network> {
         private_key: LocationDto,
     },
     AleoExecute {
-        private_key: &PrivateKey<N>,
+        private_key: &LocationDto,
         program_id: impl TryInto<ProgramID<N>>,
         function_name: impl TryInto<Identifier<N>>,
         inputs: impl ExactSizeIterator<Item = impl TryInto<Value<N>>>,
