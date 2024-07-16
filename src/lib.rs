@@ -23,7 +23,7 @@ use iota_stronghold::{
     procedures::{
         BIP39Generate, BIP39Recover, Ed25519Sign, KeyType as StrongholdKeyType,
         MnemonicLanguage, PublicKey, Slip10Derive, Slip10DeriveInput, Slip10Generate,
-        StrongholdProcedure, Curve, AleoSign,GetAleoAddress,AleoSignRequest
+        StrongholdProcedure, Curve, AleoSign, GetAleoAddress, AleoSignRequest, AleoExecute
     },
     Client, Location,
 };
@@ -204,6 +204,14 @@ pub enum ProcedureDto<N:Network> {
         is_root: bool,
         #[serde(rename = "privateKey")]
         private_key: LocationDto,
+    },
+    AleoExecute {
+        private_key: &PrivateKey<N>,
+        program_id: impl TryInto<ProgramID<N>>,
+        function_name: impl TryInto<Identifier<N>>,
+        inputs: impl ExactSizeIterator<Item = impl TryInto<Value<N>>>,
+        fee_record: Option<Record<N, Plaintext<N>>>,
+        priority_fee_in_microcredits: u64,
     }
 }
 
@@ -280,8 +288,17 @@ impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
                     is_root,
                     private_key: private_key.into()
                 })
+            },
+            ProcedureDto::AleoExecute { private_key, program_id, function_name, inputs, fee_record, priority_fee_in_microcredits } => {
+                StrongholdProcedure::AleoExecute(AleoExecute {
+                    private_key,
+                    program_id,
+                    function_name,
+                    inputs,
+                    fee_record,
+                    priority_fee_in_microcredits
+                })
             }
-
         }
     }
 }
