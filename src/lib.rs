@@ -32,7 +32,7 @@ use crypto::keys::bip39::{Mnemonic,Passphrase};
 use serde::{de::Visitor, Deserialize, Deserializer, Serialize};
 use stronghold::{Error, Result, Stronghold};
 use zeroize::Zeroize;
-use snarkvm_console::{network::Network, program::{Identifier,ProgramID,Value, ValueType, Field}};
+use snarkvm_console::{network::Network, program::{Identifier,ProgramID,Value, ValueType, Field, Record, Plaintext}};
 
 #[cfg(feature = "kdf")]
 pub mod kdf;
@@ -207,9 +207,9 @@ pub enum ProcedureDto<N:Network> {
     },
     AleoExecute {
         private_key: LocationDto,
-        program_id: impl TryInto<ProgramID<N>>,
-        function_name: impl TryInto<Identifier<N>>,
-        inputs: impl ExactSizeIterator<Item = impl TryInto<Value<N>>>,
+        program_id: ProgramID<N>,
+        function_name: Identifier<N>,
+        inputs: Vec<Value<N>>,
         fee_record: Option<Record<N, Plaintext<N>>>,
         priority_fee_in_microcredits: u64,
     }
@@ -291,7 +291,7 @@ impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
             },
             ProcedureDto::AleoExecute { private_key, program_id, function_name, inputs, fee_record, priority_fee_in_microcredits } => {
                 StrongholdProcedure::AleoExecute(AleoExecute {
-                    private_key,
+                    private_key: private_key.into(),
                     program_id,
                     function_name,
                     inputs,

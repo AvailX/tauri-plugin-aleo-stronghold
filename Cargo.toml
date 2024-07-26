@@ -15,14 +15,14 @@ rustdoc-args = [ "--cfg", "docsrs" ]
 serde = { version = "1", features = ["derive"]}
 serde_json = "1"
 thiserror = "1"
-iota_stronghold = {git="https://github.com/AvailX/stronghold.rs", rev="28ab6c4"}
-iota-crypto = {git="https://github.com/AvailX/crypto.rs", rev="707a041", features=["bip39"]}
+iota_stronghold = {git="https://github.com/AvailX/stronghold.rs", rev="dedb4f7"}
+iota-crypto = {git="https://github.com/AvailX/crypto.rs", rev="66cdc4e", features=["bip39"]}
 hex = "0.4"
 zeroize = { version = "1", features = [ "zeroize_derive" ] }
 rust-argon2 = { version = "1", optional = true }
 rand_chacha = { version = "0.3.1", optional = true }
 rand_core = { version = "0.6.4", features = [ "getrandom" ], optional = true }
-snarkvm-console = { version = "0.16.19", git = "https://github.com/AvailX/snarkVM/", rev="34cb735"}
+snarkvm-console = { version = "0.16.19", git = "https://github.com/AleoNet/snarkVM.git" }
 
 [dev-dependencies]
 rand = "0.8"
