@@ -212,6 +212,7 @@ pub enum ProcedureDto<N:Network> {
         inputs: Vec<Value<N>>,
         fee_record: Option<Record<N, Plaintext<N>>>,
         priority_fee_in_microcredits: u64,
+        base_url: String,
     }
 }
 
@@ -289,14 +290,15 @@ impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
                     private_key: private_key.into()
                 })
             },
-            ProcedureDto::AleoExecute { private_key, program_id, function_name, inputs, fee_record, priority_fee_in_microcredits } => {
+            ProcedureDto::AleoExecute { private_key, program_id, function_name, inputs, fee_record, priority_fee_in_microcredits, base_url } => {
                 StrongholdProcedure::AleoExecute(AleoExecute {
                     private_key: private_key.into(),
                     program_id,
                     function_name,
                     inputs,
                     fee_record,
-                    priority_fee_in_microcredits
+                    priority_fee_in_microcredits,
+                    base_url,
                 })
             }
         }
