@@ -23,7 +23,9 @@ use iota_stronghold::{
     procedures::{
         BIP39Generate, BIP39Recover, Ed25519Sign, KeyType as StrongholdKeyType,
         MnemonicLanguage, PublicKey, Slip10Derive, Slip10DeriveInput, Slip10Generate,
-        StrongholdProcedure, Curve, AleoSign, GetAleoAddress, AleoSignRequest, AleoExecute
+        StrongholdProcedure, Curve, AleoSign, GetAleoAddress, AleoSignRequest, AleoExecute,
+        BIP39Store, UnsafeGetBIP39Mnemonic, GetAleoViewKey, UnsafeGetAleoPrivateKey,
+        serde_bip39
     },
     Client, Location,
 };
@@ -33,6 +35,7 @@ use serde::{de::Visitor, Deserialize, Deserializer, Serialize};
 use stronghold::{Error, Result, Stronghold};
 use zeroize::Zeroize;
 use snarkvm_console::{network::Network, program::{Identifier,ProgramID,Value, ValueType, Field, Record, Plaintext}};
+use std::marker::PhantomData;
 
 #[cfg(feature = "kdf")]
 pub mod kdf;
@@ -173,6 +176,16 @@ pub enum ProcedureDto<N:Network> {
         passphrase: Option<String>,
         output: LocationDto,
     },
+    BIP39Store {
+        #[serde(with = "serde_bip39")]
+        passphrase: Passphrase,
+        #[serde(with = "serde_bip39")]
+        mnemonic: Mnemonic,
+        output: LocationDto,
+    },
+    UnsafeGetBIP39Mnemonic{
+        mnemonic: LocationDto,
+    },
     PublicKey {
         #[serde(rename = "type")]
         ty: KeyType,
@@ -195,6 +208,16 @@ pub enum ProcedureDto<N:Network> {
         private_key: LocationDto,
         ext: Identifier<N>
     },
+    GetAleoViewKey {
+        #[serde(rename = "privateKey")]
+        private_key: LocationDto,
+        _network: PhantomData<N>,
+    },
+    UnsafeGetAleoPrivateKey {
+        #[serde(rename = "privateKey")]
+        private_key: LocationDto,
+        _network: PhantomData<N>,
+    },
     AleoSignRequest {
         program_id: ProgramID<N>,
         function_name: Identifier<N>,
@@ -206,6 +229,7 @@ pub enum ProcedureDto<N:Network> {
         private_key: LocationDto,
     },
     AleoExecute {
+        #[serde(rename = "privateKey")]
         private_key: LocationDto,
         program_id: ProgramID<N>,
         function_name: Identifier<N>,
@@ -253,7 +277,19 @@ impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
                     output: output.into(),
                     language: MnemonicLanguage::English,
                 })
-            }
+            },
+            ProcedureDto::BIP39Store { passphrase, mnemonic, output } => {
+                StrongholdProcedure::BIP39Store(BIP39Store {
+                    passphrase,
+                    mnemonic,
+                    output: output.into(),
+                })
+            },
+            ProcedureDto::UnsafeGetBIP39Mnemonic { mnemonic } => {
+                StrongholdProcedure::UnsafeGetBIP39Mnemonic(UnsafeGetBIP39Mnemonic {
+                    mnemonic: mnemonic.into(),
+                })
+            },
             ProcedureDto::PublicKey { ty, private_key } => {
                 StrongholdProcedure::PublicKey(PublicKey {
                     ty: ty.into(),
@@ -277,6 +313,18 @@ impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
                 StrongholdProcedure::GetAleoAddress(GetAleoAddress {
                     private_key: private_key.into(),
                     ext
+                })
+            },
+            ProcedureDto::GetAleoViewKey { private_key, _network } => {
+                StrongholdProcedure::GetAleoViewKey(GetAleoViewKey {
+                    private_key: private_key.into(),
+                    _network
+                })
+            },
+            ProcedureDto::UnsafeGetAleoPrivateKey { private_key, _network } => {
+                StrongholdProcedure::UnsafeGetAleoPrivateKey(UnsafeGetAleoPrivateKey {
+                    private_key: private_key.into(),
+                    _network
                 })
             },
             ProcedureDto::AleoSignRequest { program_id, function_name, inputs, input_types, root_tvk, is_root, private_key } => {
