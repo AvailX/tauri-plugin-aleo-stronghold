@@ -25,6 +25,7 @@ use iota_stronghold::{
         MnemonicLanguage, PublicKey, Slip10Derive, Slip10DeriveInput, Slip10Generate,
         StrongholdProcedure, Curve, AleoSign, GetAleoAddress, AleoSignRequest, AleoExecute,
         BIP39Store, UnsafeGetBIP39Mnemonic, GetAleoViewKey, UnsafeGetAleoPrivateKey,
+        AleoAuthorize, AleoAuthorizeFeePublic, AleoAuthorizeFeePrivate,
         serde_bip39
     },
     Client, Location,
@@ -228,6 +229,25 @@ pub enum ProcedureDto<N:Network> {
         #[serde(rename = "privateKey")]
         private_key: LocationDto,
     },
+    AleoAuthorize {
+        private_key: LocationDto,
+        program_id: ProgramID<N>,
+        function_name: Identifier<N>,
+        inputs: Vec<Value<N>>,
+    },
+    AleoAuthorizeFeePublic {
+        private_key: LocationDto,
+        base_fee_in_microcredits: u64,
+        priority_fee_in_microcredits: u64,
+        deployment_or_execution_id: Field<N>,
+    },
+    AleoAuthorizeFeePrivate {
+        private_key: LocationDto,
+        credits: Record<N, Plaintext<N>>,
+        base_fee_in_microcredits: u64,
+        priority_fee_in_microcredits: u64,
+        deployment_or_execution_id: Field<N>,
+    },
     AleoExecute {
         #[serde(rename = "privateKey")]
         private_key: LocationDto,
@@ -336,6 +356,31 @@ impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
                     root_tvk,
                     is_root,
                     private_key: private_key.into()
+                })
+            },
+            ProcedureDto::AleoAuthorize { private_key, program_id, function_name, inputs } => {
+                StrongholdProcedure::AleoAuthorize(AleoAuthorize {
+                    private_key: private_key.into(),
+                    program_id,
+                    function_name,
+                    inputs,
+                })
+            },
+            ProcedureDto::AleoAuthorizeFeePublic { private_key, base_fee_in_microcredits, priority_fee_in_microcredits, deployment_or_execution_id } => {
+                StrongholdProcedure::AleoAuthorizeFeePublic(AleoAuthorizeFeePublic {
+                    private_key: private_key.into(),
+                    base_fee_in_microcredits,
+                    priority_fee_in_microcredits,
+                    deployment_or_execution_id
+                })
+            },
+            ProcedureDto::AleoAuthorizeFeePrivate { private_key, credits, base_fee_in_microcredits, priority_fee_in_microcredits, deployment_or_execution_id } => {
+                StrongholdProcedure::AleoAuthorizeFeePrivate(AleoAuthorizeFeePrivate {
+                    private_key: private_key.into(),
+                    credits,
+                    base_fee_in_microcredits,
+                    priority_fee_in_microcredits,
+                    deployment_or_execution_id
                 })
             },
             ProcedureDto::AleoExecute { private_key, program_id, function_name, inputs, fee_record, priority_fee_in_microcredits, base_url } => {
