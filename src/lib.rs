@@ -34,7 +34,7 @@ use crypto::keys::bip39::{Mnemonic,Passphrase};
 
 use serde::{de::Visitor, Deserialize, Deserializer, Serialize};
 use stronghold::{Error, Result, Stronghold};
-use zeroize::Zeroize;
+use zeroize::{Zeroize, Zeroizing};
 use snarkvm_console::{network::Network, program::{Identifier,ProgramID,Value, ValueType, Field, Record, Plaintext}};
 use std::marker::PhantomData;
 
@@ -515,6 +515,21 @@ pub async fn save_secret(
     client
         .vault(&vault)
         .write_secret(Location::generic(vault, record_path), zeroize::Zeroizing::new(secret))
+        .map_err(Into::into)
+}
+
+
+pub async fn unsafe_get_secret(
+    collection: &StrongholdCollection,
+    snapshot_path: PathBuf,
+    client: BytesDto,
+    vault: BytesDto,
+    record_path: BytesDto,
+) -> Result<Zeroizing<Vec<u8>>> {
+    let client = get_client(collection, snapshot_path, client)?;
+    client
+        .vault(&vault)
+        .read_secret(record_path)
         .map_err(Into::into)
 }
 
