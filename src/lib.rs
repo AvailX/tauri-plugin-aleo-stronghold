@@ -24,8 +24,7 @@ use iota_stronghold::{
         BIP39Generate, BIP39Recover, Ed25519Sign, KeyType as StrongholdKeyType,
         MnemonicLanguage, PublicKey, Slip10Derive, Slip10DeriveInput, Slip10Generate,
         StrongholdProcedure, Curve, AleoSign, GetAleoAddress, AleoSignRequest, AleoExecute,
-        BIP39Store, UnsafeGetBIP39Mnemonic, GetAleoViewKey, UnsafeGetAleoPrivateKey,
-        AleoAuthorize, AleoAuthorizeFeePublic, AleoAuthorizeFeePrivate,
+        GetAleoViewKey, AleoAuthorize, AleoAuthorizeFeePublic, AleoAuthorizeFeePrivate,
         serde_bip39
     },
     Client, Location,
@@ -177,16 +176,6 @@ pub enum ProcedureDto<N:Network> {
         passphrase: Option<String>,
         output: LocationDto,
     },
-    BIP39Store {
-        #[serde(with = "serde_bip39")]
-        passphrase: Passphrase,
-        #[serde(with = "serde_bip39")]
-        mnemonic: Mnemonic,
-        output: LocationDto,
-    },
-    UnsafeGetBIP39Mnemonic{
-        mnemonic: LocationDto,
-    },
     PublicKey {
         #[serde(rename = "type")]
         ty: KeyType,
@@ -210,11 +199,6 @@ pub enum ProcedureDto<N:Network> {
         ext: Identifier<N>
     },
     GetAleoViewKey {
-        #[serde(rename = "privateKey")]
-        private_key: LocationDto,
-        _network: PhantomData<N>,
-    },
-    UnsafeGetAleoPrivateKey {
         #[serde(rename = "privateKey")]
         private_key: LocationDto,
         _network: PhantomData<N>,
@@ -298,18 +282,6 @@ impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
                     language: MnemonicLanguage::English,
                 })
             },
-            ProcedureDto::BIP39Store { passphrase, mnemonic, output } => {
-                StrongholdProcedure::BIP39Store(BIP39Store {
-                    passphrase,
-                    mnemonic,
-                    output: output.into(),
-                })
-            },
-            ProcedureDto::UnsafeGetBIP39Mnemonic { mnemonic } => {
-                StrongholdProcedure::UnsafeGetBIP39Mnemonic(UnsafeGetBIP39Mnemonic {
-                    mnemonic: mnemonic.into(),
-                })
-            },
             ProcedureDto::PublicKey { ty, private_key } => {
                 StrongholdProcedure::PublicKey(PublicKey {
                     ty: ty.into(),
@@ -337,12 +309,6 @@ impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
             },
             ProcedureDto::GetAleoViewKey { private_key, _network } => {
                 StrongholdProcedure::GetAleoViewKey(GetAleoViewKey {
-                    private_key: private_key.into(),
-                    _network
-                })
-            },
-            ProcedureDto::UnsafeGetAleoPrivateKey { private_key, _network } => {
-                StrongholdProcedure::UnsafeGetAleoPrivateKey(UnsafeGetAleoPrivateKey {
                     private_key: private_key.into(),
                     _network
                 })
