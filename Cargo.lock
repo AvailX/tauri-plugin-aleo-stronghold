@@ -1098,7 +1098,7 @@ dependencies = [
 [[package]]
 name = "iota-crypto"
 version = "0.23.1"
-source = "git+https://github.com/AvailX/crypto.rs?rev=1d27854#1d278546e755b0646b3dd53135826187cd322e87"
+source = "git+https://github.com/AvailX/crypto.rs?rev=7d1022a#7d1022af57927c8255042a76c0f16012fa282b23"
 dependencies = [
  "aead",
  "aes",
@@ -1128,11 +1128,11 @@ dependencies = [
 [[package]]
 name = "iota_stronghold"
 version = "2.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=f061c6a#f061c6a0b0df6a8f4509233229901e96c4b95ce7"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=9d96859#9d96859fc61d48386ef522f26984d672bcf5f1c3"
 dependencies = [
  "bincode",
  "hkdf",
- "iota-crypto 0.23.1 (git+https://github.com/AvailX/crypto.rs?rev=1d27854)",
+ "iota-crypto 0.23.1 (git+https://github.com/AvailX/crypto.rs?rev=7d1022a)",
  "rand",
  "rust-argon2",
  "serde",
@@ -2839,7 +2839,7 @@ dependencies = [
 [[package]]
 name = "stronghold-derive"
 version = "1.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=f061c6a#f061c6a0b0df6a8f4509233229901e96c4b95ce7"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=9d96859#9d96859fc61d48386ef522f26984d672bcf5f1c3"
 dependencies = [
  "proc-macro2",
  "quote 1.0.35",
@@ -2849,7 +2849,7 @@ dependencies = [
 [[package]]
 name = "stronghold-runtime"
 version = "2.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=f061c6a#f061c6a0b0df6a8f4509233229901e96c4b95ce7"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=9d96859#9d96859fc61d48386ef522f26984d672bcf5f1c3"
 dependencies = [
  "dirs",
  "iota-crypto 0.23.1 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -2867,7 +2867,7 @@ dependencies = [
 [[package]]
 name = "stronghold-utils"
 version = "1.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=f061c6a#f061c6a0b0df6a8f4509233229901e96c4b95ce7"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=9d96859#9d96859fc61d48386ef522f26984d672bcf5f1c3"
 dependencies = [
  "rand",
  "stronghold-derive",
@@ -2876,7 +2876,7 @@ dependencies = [
 [[package]]
 name = "stronghold_engine"
 version = "2.0.0"
-source = "git+https://github.com/AvailX/stronghold.rs?rev=f061c6a#f061c6a0b0df6a8f4509233229901e96c4b95ce7"
+source = "git+https://github.com/AvailX/stronghold.rs?rev=9d96859#9d96859fc61d48386ef522f26984d672bcf5f1c3"
 dependencies = [
  "anyhow",
  "dirs-next",
@@ -2970,7 +2970,7 @@ name = "tauri-plugin-aleo-stronghold"
 version = "2.0.0-beta.3"
 dependencies = [
  "hex",
- "iota-crypto 0.23.1 (git+https://github.com/AvailX/crypto.rs?rev=1d27854)",
+ "iota-crypto 0.23.1 (git+https://github.com/AvailX/crypto.rs?rev=7d1022a)",
  "iota_stronghold",
  "rand",
  "rand_chacha",
