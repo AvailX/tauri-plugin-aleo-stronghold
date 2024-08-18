@@ -19,23 +19,25 @@ use std::{
     time::Duration,
 };
 
+use crypto::keys::bip39::{Mnemonic, Passphrase};
 use iota_stronghold::{
     procedures::{
-        BIP39Generate, BIP39Recover, Ed25519Sign, KeyType as StrongholdKeyType,
-        MnemonicLanguage, PublicKey, Slip10Derive, Slip10DeriveInput, Slip10Generate,
-        StrongholdProcedure, Curve, AleoSign, GetAleoAddress, AleoSignRequest, AleoExecute,
-        GetAleoViewKey, AleoAuthorize, AleoAuthorizeFeePublic, AleoAuthorizeFeePrivate,
-        serde_bip39
+        AleoAuthorize, AleoAuthorizeFeePrivate, AleoAuthorizeFeePublic, AleoExecute, AleoSign,
+        AleoSignRequest, BIP39Generate, BIP39Recover, Curve, Ed25519Sign, GetAleoAddress,
+        GetAleoViewKey, KeyType as StrongholdKeyType, MnemonicLanguage, PublicKey, Slip10Derive,
+        Slip10DeriveInput, Slip10Generate, StrongholdProcedure,
     },
     Client, Location,
 };
-use crypto::keys::bip39::{Mnemonic,Passphrase};
 
 use serde::{de::Visitor, Deserialize, Deserializer, Serialize};
+use snarkvm_console::{
+    network::Network,
+    program::{Field, Identifier, Plaintext, ProgramID, Record, Value, ValueType},
+};
+use std::marker::PhantomData;
 use stronghold::{Error, Result, Stronghold};
 use zeroize::{Zeroize, Zeroizing};
-use snarkvm_console::{network::Network, program::{Identifier,ProgramID,Value, ValueType, Field, Record, Plaintext}};
-use std::marker::PhantomData;
 
 #[cfg(feature = "kdf")]
 pub mod kdf;
@@ -49,7 +51,7 @@ pub struct StrongholdCollection(Arc<Mutex<HashMap<PathBuf, Stronghold>>>);
 
 pub struct PasswordHashFunction(pub Box<PasswordHashFn>);
 
-#[derive(Deserialize, Hash, Eq, PartialEq, Ord, PartialOrd,Serialize, Clone)]
+#[derive(Deserialize, Hash, Eq, PartialEq, Ord, PartialOrd, Serialize, Clone)]
 #[serde(untagged)]
 pub enum BytesDto {
     Text(String),
@@ -154,7 +156,7 @@ impl<'de> Deserialize<'de> for KeyType {
 #[derive(Deserialize)]
 #[serde(tag = "type", content = "payload", bound = "N: Network")]
 #[allow(clippy::upper_case_acronyms)]
-pub enum ProcedureDto<N:Network> {
+pub enum ProcedureDto<N: Network> {
     SLIP10Generate {
         output: LocationDto,
         #[serde(rename = "sizeBytes")]
@@ -165,7 +167,7 @@ pub enum ProcedureDto<N:Network> {
         chain: Vec<u32>,
         input: Slip10DeriveInputDto,
         output: LocationDto,
-        network: String
+        network: String,
     },
     BIP39Recover {
         mnemonic: String,
@@ -191,12 +193,12 @@ pub enum ProcedureDto<N:Network> {
         #[serde(rename = "privateKey")]
         private_key: LocationDto,
         msg: String,
-        ext: Identifier<N>
+        ext: Identifier<N>,
     },
     GetAleoAddress {
         #[serde(rename = "privateKey")]
         private_key: LocationDto,
-        ext: Identifier<N>
+        ext: Identifier<N>,
     },
     GetAleoViewKey {
         #[serde(rename = "privateKey")]
@@ -241,10 +243,10 @@ pub enum ProcedureDto<N:Network> {
         fee_record: Option<Record<N, Plaintext<N>>>,
         priority_fee_in_microcredits: u64,
         base_url: String,
-    }
+    },
 }
 
-impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
+impl<N: Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
     fn from(dto: ProcedureDto<N>) -> StrongholdProcedure<N> {
         match dto {
             ProcedureDto::SLIP10Generate { output, size_bytes } => {
@@ -258,13 +260,13 @@ impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
                 chain,
                 input,
                 output,
-                network
+                network,
             } => StrongholdProcedure::Slip10Derive(Slip10Derive {
                 curve,
                 chain,
                 input: input.into(),
                 output: output.into(),
-                network
+                network,
             }),
             ProcedureDto::BIP39Recover {
                 mnemonic,
@@ -281,7 +283,7 @@ impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
                     output: output.into(),
                     language: MnemonicLanguage::English,
                 })
-            },
+            }
             ProcedureDto::PublicKey { ty, private_key } => {
                 StrongholdProcedure::PublicKey(PublicKey {
                     ty: ty.into(),
@@ -294,76 +296,100 @@ impl<N:Network> From<ProcedureDto<N>> for StrongholdProcedure<N> {
                     msg: msg.as_bytes().to_vec(),
                 })
             }
-            ProcedureDto::AleoSign { private_key, msg, ext } => {
-                StrongholdProcedure::AleoSign(AleoSign {
-                    private_key: private_key.into(),
-                    msg: msg.as_bytes().to_vec(),
-                    ext
-                })
-            },
+            ProcedureDto::AleoSign {
+                private_key,
+                msg,
+                ext,
+            } => StrongholdProcedure::AleoSign(AleoSign {
+                private_key: private_key.into(),
+                msg: msg.as_bytes().to_vec(),
+                ext,
+            }),
             ProcedureDto::GetAleoAddress { private_key, ext } => {
                 StrongholdProcedure::GetAleoAddress(GetAleoAddress {
                     private_key: private_key.into(),
-                    ext
-                })
-            },
-            ProcedureDto::GetAleoViewKey { private_key, _network } => {
-                StrongholdProcedure::GetAleoViewKey(GetAleoViewKey {
-                    private_key: private_key.into(),
-                    _network
-                })
-            },
-            ProcedureDto::AleoSignRequest { program_id, function_name, inputs, input_types, root_tvk, is_root, private_key } => {
-                StrongholdProcedure::AleoSignRequest(AleoSignRequest {
-                    program_id,
-                    function_name,
-                    inputs,
-                    input_types,
-                    root_tvk,
-                    is_root,
-                    private_key: private_key.into()
-                })
-            },
-            ProcedureDto::AleoAuthorize { private_key, program_id, function_name, inputs } => {
-                StrongholdProcedure::AleoAuthorize(AleoAuthorize {
-                    private_key: private_key.into(),
-                    program_id,
-                    function_name,
-                    inputs,
-                })
-            },
-            ProcedureDto::AleoAuthorizeFeePublic { private_key, base_fee_in_microcredits, priority_fee_in_microcredits, deployment_or_execution_id } => {
-                StrongholdProcedure::AleoAuthorizeFeePublic(AleoAuthorizeFeePublic {
-                    private_key: private_key.into(),
-                    base_fee_in_microcredits,
-                    priority_fee_in_microcredits,
-                    deployment_or_execution_id
-                })
-            },
-            ProcedureDto::AleoAuthorizeFeePrivate { private_key, credits, base_fee_in_microcredits, priority_fee_in_microcredits, deployment_or_execution_id } => {
-                StrongholdProcedure::AleoAuthorizeFeePrivate(AleoAuthorizeFeePrivate {
-                    private_key: private_key.into(),
-                    credits,
-                    base_fee_in_microcredits,
-                    priority_fee_in_microcredits,
-                    deployment_or_execution_id
-                })
-            },
-            ProcedureDto::AleoExecute { private_key, program_id, function_name, inputs, fee_record, priority_fee_in_microcredits, base_url } => {
-                StrongholdProcedure::AleoExecute(AleoExecute {
-                    private_key: private_key.into(),
-                    program_id,
-                    function_name,
-                    inputs,
-                    fee_record,
-                    priority_fee_in_microcredits,
-                    base_url,
+                    ext,
                 })
             }
+            ProcedureDto::GetAleoViewKey {
+                private_key,
+                _network,
+            } => StrongholdProcedure::GetAleoViewKey(GetAleoViewKey {
+                private_key: private_key.into(),
+                _network,
+            }),
+            ProcedureDto::AleoSignRequest {
+                program_id,
+                function_name,
+                inputs,
+                input_types,
+                root_tvk,
+                is_root,
+                private_key,
+            } => StrongholdProcedure::AleoSignRequest(AleoSignRequest {
+                program_id,
+                function_name,
+                inputs,
+                input_types,
+                root_tvk,
+                is_root,
+                private_key: private_key.into(),
+            }),
+            ProcedureDto::AleoAuthorize {
+                private_key,
+                program_id,
+                function_name,
+                inputs,
+            } => StrongholdProcedure::AleoAuthorize(AleoAuthorize {
+                private_key: private_key.into(),
+                program_id,
+                function_name,
+                inputs,
+            }),
+            ProcedureDto::AleoAuthorizeFeePublic {
+                private_key,
+                base_fee_in_microcredits,
+                priority_fee_in_microcredits,
+                deployment_or_execution_id,
+            } => StrongholdProcedure::AleoAuthorizeFeePublic(AleoAuthorizeFeePublic {
+                private_key: private_key.into(),
+                base_fee_in_microcredits,
+                priority_fee_in_microcredits,
+                deployment_or_execution_id,
+            }),
+            ProcedureDto::AleoAuthorizeFeePrivate {
+                private_key,
+                credits,
+                base_fee_in_microcredits,
+                priority_fee_in_microcredits,
+                deployment_or_execution_id,
+            } => StrongholdProcedure::AleoAuthorizeFeePrivate(AleoAuthorizeFeePrivate {
+                private_key: private_key.into(),
+                credits,
+                base_fee_in_microcredits,
+                priority_fee_in_microcredits,
+                deployment_or_execution_id,
+            }),
+            ProcedureDto::AleoExecute {
+                private_key,
+                program_id,
+                function_name,
+                inputs,
+                fee_record,
+                priority_fee_in_microcredits,
+                base_url,
+            } => StrongholdProcedure::AleoExecute(AleoExecute {
+                private_key: private_key.into(),
+                program_id,
+                function_name,
+                inputs,
+                fee_record,
+                priority_fee_in_microcredits,
+                base_url,
+            }),
         }
     }
 }
-
 
 pub async fn initialize(
     collection: &StrongholdCollection,
@@ -384,11 +410,7 @@ pub async fn initialize(
     Ok(())
 }
 
-
-pub async fn destroy(
-    collection: &StrongholdCollection,
-    snapshot_path: PathBuf,
-) -> Result<()> {
+pub async fn destroy(collection: &StrongholdCollection, snapshot_path: PathBuf) -> Result<()> {
     let mut collection = collection.0.lock().unwrap();
     if let Some(stronghold) = collection.remove(&snapshot_path) {
         if let Err(e) = stronghold.save() {
@@ -399,7 +421,6 @@ pub async fn destroy(
     Ok(())
 }
 
-
 pub async fn save(collection: &StrongholdCollection, snapshot_path: PathBuf) -> Result<()> {
     let collection = collection.0.lock().unwrap();
     if let Some(stronghold) = collection.get(&snapshot_path) {
@@ -407,7 +428,6 @@ pub async fn save(collection: &StrongholdCollection, snapshot_path: PathBuf) -> 
     }
     Ok(())
 }
-
 
 pub async fn create_client(
     collection: &StrongholdCollection,
@@ -419,9 +439,8 @@ pub async fn create_client(
     Ok(())
 }
 
-
 pub async fn load_client(
-    collection:  &StrongholdCollection,
+    collection: &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
 ) -> Result<()> {
@@ -429,7 +448,6 @@ pub async fn load_client(
     stronghold.load_client(client)?;
     Ok(())
 }
-
 
 pub async fn get_store_record(
     collection: &StrongholdCollection,
@@ -440,7 +458,6 @@ pub async fn get_store_record(
     let client = get_client(collection, snapshot_path, client)?;
     client.store().get(key.as_ref()).map_err(Into::into)
 }
-
 
 pub async fn save_store_record(
     collection: &StrongholdCollection,
@@ -457,7 +474,6 @@ pub async fn save_store_record(
         .map_err(Into::into)
 }
 
-
 pub async fn remove_store_record(
     collection: &StrongholdCollection,
     snapshot_path: PathBuf,
@@ -467,7 +483,6 @@ pub async fn remove_store_record(
     let client = get_client(collection, snapshot_path, client)?;
     client.store().delete(key.as_ref()).map_err(Into::into)
 }
-
 
 pub async fn save_secret(
     collection: &StrongholdCollection,
@@ -480,10 +495,12 @@ pub async fn save_secret(
     let client = get_client(collection, snapshot_path, client)?;
     client
         .vault(&vault)
-        .write_secret(Location::generic(vault, record_path), zeroize::Zeroizing::new(secret))
+        .write_secret(
+            Location::generic(vault, record_path),
+            zeroize::Zeroizing::new(secret),
+        )
         .map_err(Into::into)
 }
-
 
 pub async fn unsafe_get_secret(
     collection: &StrongholdCollection,
@@ -498,7 +515,6 @@ pub async fn unsafe_get_secret(
         .read_secret(record_path)
         .map_err(Into::into)
 }
-
 
 pub async fn remove_secret(
     collection: &StrongholdCollection,
@@ -515,8 +531,7 @@ pub async fn remove_secret(
         .map_err(Into::into)
 }
 
-
-pub async fn execute_procedure<N:Network>(
+pub async fn execute_procedure<N: Network>(
     collection: &StrongholdCollection,
     snapshot_path: PathBuf,
     client: BytesDto,
